@@ -27,6 +27,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,15 +58,13 @@ fun AddScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ){
-                OutlinedTextField(value = "", onValueChange = {}, placeholder = { Text(text = "Title", fontSize = 30.sp)},
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = myGrey,
-                        unfocusedBorderColor = myGrey,
-                        focusedContainerColor = myGrey,
-                        unfocusedContainerColor = myGrey
-                    ),
-                    shape = RoundedCornerShape(10.dp),
+                TextField(value = "", onValueChange = {}, modifier = Modifier.padding(start = 20.dp).fillMaxWidth(0.82f),
+                    placeholder = { Text(text = "Title", fontSize = 30.sp)},
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.Transparent,
                     )
+                )
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(imageVector = Icons.Default.Star, contentDescription = "", modifier = Modifier.size(40.dp))
                 }
