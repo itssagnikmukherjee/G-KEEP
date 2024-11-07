@@ -1,4 +1,4 @@
-package com.example.gkeep
+package com.example.gkeep.ui.presentation.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -27,7 +27,7 @@ fun TodoGrid(){
 }
 
 @Composable
-fun TodoCards(todo:Todo){
+fun TodoCards(todo: Todo){
     Box(modifier = Modifier.fillMaxWidth().padding(10.dp),
         contentAlignment = Alignment.Center){
 
