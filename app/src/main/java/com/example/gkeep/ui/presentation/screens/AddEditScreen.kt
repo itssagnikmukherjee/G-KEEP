@@ -38,8 +38,12 @@ import com.example.gkeep.ui.data.database.NotesDatabase
 import com.example.gkeep.ui.data.tables.Notes
 import com.example.gkeep.ui.presentation.navigation.MainScreen
 import com.example.gkeep.ui.theme.myGrey
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun AddEditScreeUI(navController: NavHostController, db: NotesDatabase) {
     var title by remember { mutableStateOf("") }
@@ -86,7 +90,7 @@ fun AddEditScreeUI(navController: NavHostController, db: NotesDatabase) {
             )
         }
         Button(onClick = {
-            db.dao().upsertNote(Notes(0,note,title,""))
+            GlobalScope.launch { db.dao().upsertNote(Notes(0,note,title,"")) }
             navController.navigate(MainScreen)
         }, modifier = Modifier
             .align(alignment = Alignment.BottomEnd)

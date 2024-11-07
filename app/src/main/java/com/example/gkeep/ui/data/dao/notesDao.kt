@@ -10,12 +10,12 @@ import com.example.gkeep.ui.data.tables.Notes
 interface notesDao {
 
     @Upsert
-    fun upsertNote(notes: Notes)
+    suspend fun upsertNote(notes: Notes)
 
     @Delete
-    fun deleteNote(notes: Notes)
+    suspend fun deleteNote(notes: Notes)
 
     @Query("SELECT * FROM notes ORDER BY dateTime DESC")
-    fun getNotes(): List<Notes>
+    suspend fun getNotes(): List<Notes>
 
 }

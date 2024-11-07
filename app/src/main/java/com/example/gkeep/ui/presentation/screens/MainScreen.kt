@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -146,13 +147,22 @@ fun LinearProgressBarDemo() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TodoGrid(db: NotesDatabase) {
-    val todo = db.dao().getNotes()
-    LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2), modifier = Modifier.padding(20.dp)) {
-        items(todo.size) { note ->
-            TodoCard(todo[note])
+    val todo = remember { mutableStateListOf<Notes>() }
+    LaunchedEffect(Unit) {
+        todo.clear()
+        todo.addAll(db.dao().getNotes())
+    }
+
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2),
+        modifier = Modifier.padding(20.dp)
+    ) {
+        items(todo.size) { noteIndex ->
+            TodoCard(todo[noteIndex])
         }
     }
 }
+
 
 @Composable
 fun TodoCard(note: Notes) {

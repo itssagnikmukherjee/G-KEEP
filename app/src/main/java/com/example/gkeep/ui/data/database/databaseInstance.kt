@@ -9,6 +9,6 @@ object databaseInstance {
             context,
             NotesDatabase::class.java,
             "notes_database"
-        ).allowMainThreadQueries().build()
+        ).build()
     }
 }
