@@ -2,12 +2,10 @@ package com.example.gkeep.ui.presentation.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,20 +15,14 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,68 +37,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.gkeep.R
-import com.example.gkeep.ui.theme.myGrey
+import com.example.gkeep.ui.data.database.NotesDatabase
+import com.example.gkeep.ui.data.tables.Notes
+import com.example.gkeep.ui.presentation.navigation.AddEditScreen
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-fun AddScreenUI() {
-    Box(
+fun MainScreenUI(navController: NavHostController, db: NotesDatabase) {
+    Column(
         modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(myGrey)
-            .padding(10.dp),
-        contentAlignment = Alignment.Center,
-    ){
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-
-        ){
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                TextField(value = "", onValueChange = {}, modifier = Modifier.padding(start = 20.dp).fillMaxWidth(0.82f),
-                    placeholder = { Text(text = "Title", fontSize = 30.sp)},
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.Transparent,
-                    )
-                )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "", modifier = Modifier.size(40.dp))
-                }
-            }
-            Spacer(modifier = Modifier.height(5.dp))
-            OutlinedTextField(value = "", onValueChange = {}, placeholder = { Text(text = "Note")}, modifier = Modifier
-                .height(200.dp)
-                .fillMaxWidth(0.93f),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = myGrey,
-                    unfocusedBorderColor = myGrey,
-                    focusedContainerColor = Color.White.copy(0.3f),
-                    unfocusedContainerColor = Color.White.copy(0.5f)
-                ),
-                shape = RoundedCornerShape(10.dp),
-                )
-        }
-        Button(onClick = { /*TODO*/ }, modifier = Modifier
-            .align(alignment = Alignment.BottomEnd)
-            .padding(10.dp)) {
-            Icon(imageVector = Icons.Default.Check, contentDescription = "")
+            .fillMaxSize()
+            .padding(top = 60.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        DatenTimeSec()
+        Box() {
+            TodoGrid(db)
+            AddTodoSec(navController)
         }
     }
-
 }
 
 @Composable
-fun AddTodoSec(){
-    var showAddScreen by remember { mutableStateOf(false) }
+fun AddTodoSec(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -114,7 +74,7 @@ fun AddTodoSec(){
         contentAlignment = Alignment.BottomEnd
     ){
         Button(onClick = {
-            showAddScreen = !showAddScreen
+            navController.navigate(AddEditScreen)
         }
             , modifier = Modifier.size(80.dp), shape = RoundedCornerShape(25.dp)){
             Icon(painter = painterResource(id = R.drawable.add_outline), contentDescription = "", modifier = Modifier.size(90.dp))
@@ -125,7 +85,6 @@ fun AddTodoSec(){
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DatenTimeSec(){
-    var nofTodos = someFakeTodos().size
     var currentTime by remember { mutableStateOf(LocalDateTime.now()) }
     val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
     val dateFormatter = DateTimeFormatter.ofPattern("dd MMM")
@@ -165,7 +124,6 @@ fun DatenTimeSec(){
                     Icon(imageVector = Icons.Default.Menu, contentDescription = "")
                 }
             }
-            Text(text = "6/${nofTodos}", fontSize = 18.sp, modifier = Modifier.padding(4.dp, end = 3.dp))
             LinearProgressBarDemo()
         }
     }
@@ -187,43 +145,24 @@ fun LinearProgressBarDemo() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TodoGrid(){
-    var todo = someFakeTodos()
+fun TodoGrid(db: NotesDatabase) {
+    val todo = db.dao().getNotes()
     LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2), modifier = Modifier.padding(20.dp)) {
-        items(10){
-            TodoCards(todo.random())
+        items(todo.size) { note ->
+            TodoCard(todo[note])
         }
     }
 }
 
 @Composable
-fun TodoCards(todo: Todo){
+fun TodoCard(note: Notes) {
     Box(modifier = Modifier.fillMaxWidth().padding(10.dp),
-        contentAlignment = Alignment.Center){
-
+        contentAlignment = Alignment.Center) {
         Card(onClick = {}) {
-            Box(
-                modifier = Modifier.fillMaxSize().padding(25.dp),
-            ){
-                Text(text = todo.task)
+            Box(modifier = Modifier.fillMaxSize().padding(25.dp)) {
+//                Text(text = note.title)
+                Text(text = note.noteTxt)
             }
         }
-
     }
-
-}
-
-data class Todo(val task:String)
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun someFakeTodos():List<Todo>{
-    return listOf(
-        Todo("Do something, do epic shit, don't give up bhai, eito hocche"),
-        Todo("Do coding, Go to Gym, lege thakle menge khabi na"),
-        Todo("Do MVVM"),
-        Todo("Do Jetpack Compose"),
-        Todo("Do Kotlin and Kotlin Multiplatform"),
-        Todo("Do XML"),
-
-        )
 }

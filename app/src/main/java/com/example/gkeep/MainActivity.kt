@@ -6,17 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.gkeep.ui.presentation.screens.AddTodoSec
-import com.example.gkeep.ui.presentation.screens.DatenTimeSec
-import com.example.gkeep.ui.presentation.screens.TodoGrid
+import com.example.gkeep.ui.data.database.databaseInstance
+import com.example.gkeep.ui.presentation.navigation.AppNavigation
 import com.example.gkeep.ui.theme.GKEEPTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,20 +16,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val db = databaseInstance.getDB(this)
             GKEEPTheme {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 60.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    DatenTimeSec()
-                    Box() {
-                        TodoGrid()
-                        AddTodoSec()
-                    }
-                }
+                AppNavigation(db)
             }
         }
     }

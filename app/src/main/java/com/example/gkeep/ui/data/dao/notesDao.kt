@@ -1,10 +1,12 @@
 package com.example.gkeep.ui.data.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.gkeep.ui.data.tables.Notes
 
+@Dao
 interface notesDao {
 
     @Upsert

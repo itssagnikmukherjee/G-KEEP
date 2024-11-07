@@ -9,5 +9,5 @@ data class Notes(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val noteTxt : String,
     val title : String,
-    val dateTime : OffsetDateTime? = null,
+    val dateTime : String,
     )
