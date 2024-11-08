@@ -111,8 +111,8 @@ fun DatenTimeSec(){
     ){
         Column {
             Text(text = "Mon", fontSize = 40.sp)
-            Text(text = "${formattedDate}", fontSize = 28.sp)
-            Text(text = "${formattedTime}", fontSize = 18.sp)
+            Text(text = formattedDate, fontSize = 28.sp)
+            Text(text = formattedTime, fontSize = 18.sp)
         }
         Column (
             modifier = Modifier
@@ -156,7 +156,7 @@ fun TodoGrid(db: NotesDatabase) {
         columns = StaggeredGridCells.Fixed(2),
         modifier = Modifier.padding(20.dp)
     ) {
-        if (todo.size == 0){
+        if (todo.isEmpty()){
             item {
                 Text(text = "No Notes")
             }
@@ -170,7 +170,7 @@ fun TodoGrid(db: NotesDatabase) {
 
 @Composable
 fun TodoCard(note: Notes, db: NotesDatabase) {
-    var coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxWidth().padding(10.dp),
         contentAlignment = Alignment.Center) {
         Card(onClick = {}) {
