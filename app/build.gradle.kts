@@ -2,9 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
-
     kotlin("plugin.serialization") version "2.0.21"
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 
 android {
@@ -65,8 +64,9 @@ dependencies {
     val room_version = "2.6.1"
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
-    // To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:$room_version")
+    // To use Kotlin Symbolic Processor (KSP)
+    ksp("androidx.room:room-compiler:2.5.0")
+
     // Room + Coroutine
     implementation("androidx.room:room-ktx:$room_version")
 
