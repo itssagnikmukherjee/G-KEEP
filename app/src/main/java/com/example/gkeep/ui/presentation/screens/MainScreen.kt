@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -25,10 +26,12 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +47,7 @@ import com.example.gkeep.ui.data.database.NotesDatabase
 import com.example.gkeep.ui.data.tables.Notes
 import com.example.gkeep.ui.presentation.navigation.AddEditScreen
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -147,31 +151,37 @@ fun LinearProgressBarDemo() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TodoGrid(db: NotesDatabase) {
-    val todo = remember { mutableStateListOf<Notes>() }
-    LaunchedEffect(Unit) {
-        todo.clear()
-        todo.addAll(db.dao().getNotes())
-    }
-
+    val todo by db.dao().getNotes().collectAsState(initial = emptyList())
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
         modifier = Modifier.padding(20.dp)
     ) {
+        if (todo.size == 0){
+            item {
+                Text(text = "No Notes")
+            }
+        }
         items(todo.size) { noteIndex ->
-            TodoCard(todo[noteIndex])
+            TodoCard(todo[noteIndex], db)
         }
     }
 }
 
 
 @Composable
-fun TodoCard(note: Notes) {
+fun TodoCard(note: Notes, db: NotesDatabase) {
+    var coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxWidth().padding(10.dp),
         contentAlignment = Alignment.Center) {
         Card(onClick = {}) {
             Box(modifier = Modifier.fillMaxSize().padding(25.dp)) {
 //                Text(text = note.title)
-                Text(text = note.noteTxt)
+                    Text(text = note.noteTxt)
+                    IconButton(onClick = {
+                        coroutineScope.launch { db.dao().deleteNote(note) }
+                    }) {
+                        Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+                    }
             }
         }
     }

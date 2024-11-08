@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.gkeep.ui.data.tables.Notes
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface notesDao {
@@ -16,6 +17,6 @@ interface notesDao {
     suspend fun deleteNote(notes: Notes)
 
     @Query("SELECT * FROM notes ORDER BY dateTime DESC")
-    suspend fun getNotes(): List<Notes>
+    fun getNotes(): Flow<List<Notes>>
 
 }

@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +40,7 @@ import com.example.gkeep.ui.data.tables.Notes
 import com.example.gkeep.ui.presentation.navigation.MainScreen
 import com.example.gkeep.ui.theme.myGrey
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -48,6 +50,7 @@ import kotlinx.coroutines.launch
 fun AddEditScreeUI(navController: NavHostController, db: NotesDatabase) {
     var title by remember { mutableStateOf("") }
     var note by remember { mutableStateOf("") }
+    var coroutineScope = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
@@ -90,7 +93,7 @@ fun AddEditScreeUI(navController: NavHostController, db: NotesDatabase) {
             )
         }
         Button(onClick = {
-            GlobalScope.launch { db.dao().upsertNote(Notes(0,note,title,"")) }
+            coroutineScope.launch(Dispatchers.IO) { db.dao().upsertNote(Notes(0,note,title,"")) }
             navController.navigate(MainScreen)
         }, modifier = Modifier
             .align(alignment = Alignment.BottomEnd)
