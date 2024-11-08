@@ -1,4 +1,4 @@
-package com.example.gkeep.ui.presentation.screens
+package com.example.gkeep.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,9 +35,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.gkeep.ui.data.database.NotesDatabase
-import com.example.gkeep.ui.data.tables.Notes
-import com.example.gkeep.ui.presentation.navigation.MainScreen
+import com.example.gkeep.data.database.NotesDatabase
+import com.example.gkeep.data.tables.Notes
+import com.example.gkeep.ui.navigation.MainScreen
 import com.example.gkeep.ui.theme.myGrey
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers

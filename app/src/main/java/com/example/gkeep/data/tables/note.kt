@@ -1,4 +1,4 @@
-package com.example.gkeep.ui.data.tables
+package com.example.gkeep.data.tables
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

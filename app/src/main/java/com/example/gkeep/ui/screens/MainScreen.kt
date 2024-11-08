@@ -1,4 +1,4 @@
-package com.example.gkeep.ui.presentation.screens
+package com.example.gkeep.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -43,9 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.gkeep.R
-import com.example.gkeep.ui.data.database.NotesDatabase
-import com.example.gkeep.ui.data.tables.Notes
-import com.example.gkeep.ui.presentation.navigation.AddEditScreen
+import com.example.gkeep.data.database.NotesDatabase
+import com.example.gkeep.data.tables.Notes
+import com.example.gkeep.ui.navigation.AddEditScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
