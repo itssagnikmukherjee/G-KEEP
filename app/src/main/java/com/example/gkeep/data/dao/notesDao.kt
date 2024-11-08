@@ -1,10 +1,10 @@
-package com.example.gkeep.ui.data.dao
+package com.example.gkeep.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
-import com.example.gkeep.ui.data.tables.Notes
+import com.example.gkeep.data.tables.Notes
 import kotlinx.coroutines.flow.Flow
 
 @Dao
