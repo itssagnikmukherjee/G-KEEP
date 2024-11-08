@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+
 //  Navigation
     implementation(libs.androidx.navigation.compose)
 
@@ -62,12 +63,11 @@ dependencies {
 
 //   Room
     val room_version = "2.6.1"
-
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
-
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
+    // Room + Coroutine
     implementation("androidx.room:room-ktx:$room_version")
 
     implementation(libs.androidx.core.ktx)
