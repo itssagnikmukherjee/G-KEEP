@@ -1,4 +1,4 @@
-package com.example.gkeep.ui.presentation.navigation
+package com.example.gkeep.ui.navigation
 
 import kotlinx.serialization.Serializable
 

@@ -1,14 +1,15 @@
-package com.example.gkeep.ui.data.database
+package com.example.gkeep.data.database
 
 import android.content.Context
 import androidx.room.Room
+import com.example.gkeep.DB_NAME
 
 object databaseInstance {
-    fun getDB(context: Context): NotesDatabase{
+    fun getDB(context: Context): NotesDatabase {
         return Room.databaseBuilder(
             context,
             NotesDatabase::class.java,
-            "notes_database"
+            name = DB_NAME
         ).build()
     }
 }

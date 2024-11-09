@@ -1,12 +1,12 @@
-package com.example.gkeep.ui.presentation.navigation
+package com.example.gkeep.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.gkeep.ui.data.database.NotesDatabase
-import com.example.gkeep.ui.presentation.screens.AddEditScreeUI
-import com.example.gkeep.ui.presentation.screens.MainScreenUI
+import com.example.gkeep.data.database.NotesDatabase
+import com.example.gkeep.ui.screens.AddEditScreeUI
+import com.example.gkeep.ui.screens.MainScreenUI
 
 @Composable
 fun AppNavigation(db: NotesDatabase) {

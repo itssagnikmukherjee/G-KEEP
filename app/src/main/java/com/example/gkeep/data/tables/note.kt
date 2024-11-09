@@ -1,5 +1,6 @@
-package com.example.gkeep.ui.data.tables
+package com.example.gkeep.data.tables
 
+import android.media.Image
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.OffsetDateTime
@@ -10,4 +11,5 @@ data class Notes(
     val noteTxt : String,
     val title : String,
     val dateTime : String,
+    val img: Image
     )
