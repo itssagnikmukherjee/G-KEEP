@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             val db = databaseInstance.getDB(this)
             GKEEPTheme {
                 AppNavigation(db)
